@@ -4,10 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Attendance Calculator for Students</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Attendance Calculator for Students | Track College Attendance & Plan Leaves</title>
+    <meta name="title" content="Attendance Calculator for Students | Track College Attendance & Plan Leaves">
+    <meta name="description"
+        content="Free online attendance calculator for students. Calculate your college attendance percentage, track working days, plan leaves, and maintain 75% attendance requirement easily.">
+    <meta name="keywords"
+        content="attendance calculator, student attendance, college attendance, attendance percentage, leave planner, 75% attendance, academic attendance tracker">
+    <meta name="author" content="Attendance Calculator">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/">
+    <meta property="og:title" content="Attendance Calculator for Students | Track College Attendance & Plan Leaves">
+    <meta property="og:description"
+        content="Free online attendance calculator for students. Calculate your college attendance percentage, track working days, plan leaves, and maintain 75% attendance requirement easily.">
+    <meta property="og:image" content="https://yourwebsite.com/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yourwebsite.com/">
+    <meta property="twitter:title"
+        content="Attendance Calculator for Students | Track College Attendance & Plan Leaves">
+    <meta property="twitter:description"
+        content="Free online attendance calculator for students. Calculate your college attendance percentage, track working days, plan leaves, and maintain 75% attendance requirement easily.">
+    <meta property="twitter:image" content="https://yourwebsite.com/twitter-image.jpg">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourwebsite.com/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Attendance Calculator for Students",
+      "description": "Free online attendance calculator for students to track college attendance percentage and plan leaves",
+      "url": "https://yourwebsite.com/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Calculate attendance percentage",
+        "Track working days",
+        "Plan leaves",
+        "Holiday management",
+        "Semester-wise tracking"
+      ]
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -51,6 +113,10 @@
             font-weight: 600;
             color: #1a1a1a;
             margin-bottom: 16px;
+        }
+
+        header {
+            margin-bottom: 40px;
         }
 
         .month-grid {
@@ -327,106 +393,120 @@
 </head>
 
 <body>
-    <div class="calculator-container">
-        <h1>Attendance Calculator</h1>
-        <p class="subtitle">Track your attendance and plan your leaves</p>
+    <main class="calculator-container">
+        <header>
+            <h1>Attendance Calculator</h1>
+            <p class="subtitle">Track your attendance and plan your leaves</p>
+        </header>
 
         <!-- Step 1: Select Academic Year -->
-        <div class="section">
-            <div class="section-title">Step 1: Select Academic Year</div>
+        <section class="section" aria-labelledby="step1-title">
+            <h2 class="section-title" id="step1-title">Step 1: Select Academic Year</h2>
             <div class="input-row">
                 <div class="input-section">
-                    <label>Academic Year</label>
-                    <select id="academic-year" onchange="updateMonths()">
-                        <option value="2024-2025">2024-2025</option>
-                        <option value="2025-2026">2025-2026</option>
-                        <option value="2026-2027">2026-2027</option>
+                    <label for="academic-year">Academic Year</label>
+                    <select id="academic-year" onchange="updateMonths()" aria-label="Select Academic Year"></select>
+                    <option value="2024-2025">2024-2025</option>
+                    <option value="2025-2026">2025-2026</option>
+                    <option value="2026-2027">2026-2027</option>
                     </select>
                 </div>
                 <div class="input-section">
-                    <label>Semester</label>
-                    <select id="semester" onchange="updateMonths()">
-                        <option value="odd">Odd Semester (July - December)</option>
-                        <option value="even">Even Semester (January - June)</option>
+                    <label for="semester">Semester</label>
+                    <select id="semester" onchange="updateMonths()" aria-label="Select Semester"></select>
+                    <option value="odd">Odd Semester (July - December)</option>
+                    <option value="even">Even Semester (January - June)</option>
                     </select>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Step 2: Select Months -->
-        <div class="section">
-            <div class="section-title">Step 2: Select Months You Attended</div>
+        <section class="section" aria-labelledby="step2-title">
+            <h2 class="section-title" id="step2-title">Step 2: Select Months You Attended</h2>
             <div class="info-box">
                 Click on the months when you attended college
             </div>
-            <div class="month-grid" id="month-grid"></div>
-        </div>
+            <div class="month-grid" id="month-grid" role="group" aria-label="Select months"></div>
+        </section>
 
         <!-- Step 3: Select Holidays -->
-        <div class="section">
-            <div class="section-title">Step 3: Select Holidays You Got</div>
+        <section class="section" aria-labelledby="step3-title">
+            <h2 class="section-title" id="step3-title">Step 3: Select Holidays You Got</h2>
             <div class="info-box">
                 Check the holidays that were declared by your college
             </div>
-            <div class="checkbox-grid" id="holiday-checkboxes"></div>
-        </div>
+            <div class="checkbox-grid" id="holiday-checkboxes" role="group" aria-label="Select holidays"></div>
+        </section>
 
         <!-- Step 4: Enter College Saturdays -->
-        <div class="section">
-            <div class="section-title">Step 4: Enter College Details</div>
+        <section class="section" aria-labelledby="step4-title">
+            <h2 class="section-title" id="step4-title">Step 4: Enter College Details</h2>
             <div class="input-section">
-                <label>Number of Saturdays with College</label>
-                <input type="number" id="saturdays-with-college" min="0" placeholder="e.g., 8">
+                <label for="saturdays-with-college">Number of Saturdays with College</label>
+                <input type="number" id="saturdays-with-college" min="0" placeholder="e.g., 8"
+                    aria-label="Number of Saturdays with College">
             </div>
             <div class="input-section">
-                <label>Total Days Absent</label>
-                <input type="number" id="absent-days" min="0" placeholder="e.g., 15">
+                <label for="absent-days">Total Days Absent</label>
+                <input type="number" id="absent-days" min="0" placeholder="e.g., 15" aria-label="Total Days Absent">
             </div>
-        </div>
+        </section>
 
-        <button class="calculate-btn" onclick="calculateAttendance()">Calculate My Attendance</button>
+        <button class="calculate-btn" onclick="calculateAttendance()" aria-label="Calculate My Attendance">Calculate My
+            Attendance</button>
 
         <!-- Results -->
-        <div class="result-container" id="results">
-            <div class="result-card" id="result-card">
-                <div class="result-label">Your Attendance Percentage</div>
-                <div class="result-value" id="attendance-percentage">0%</div>
-                <div class="result-message" id="result-message"></div>
-            </div>
+        <section class="result-container" id="results" aria-live="polite"></section>
+        <div class="result-card" id="result-card">
+            <div class="result-label">Your Attendance Percentage</div>
+            <div class="result-value" id="attendance-percentage">0%</div>
+            <div class="result-message" id="result-message"></div>
+        </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Total Working Days</div>
-                    <div class="stat-value" id="total-days">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Days Present</div>
-                    <div class="stat-value" id="present-days">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Days Absent</div>
-                    <div class="stat-value" id="absent-days-display">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Government Holidays</div>
-                    <div class="stat-value" id="holiday-count">0</div>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Working Days</div>
+                <div class="stat-value" id="total-days">0</div>
             </div>
-
-            <div class="recommendation" id="recommendation">
-                <div class="recommendation-title" id="rec-title">📌 Recommendation</div>
-                <div class="recommendation-text" id="rec-text"></div>
+            <div class="stat-card">
+                <div class="stat-label">Days Present</div>
+                <div class="stat-value" id="present-days">0</div>
             </div>
-
-            <div class="holiday-section" id="holiday-section">
-                <div class="holiday-title">Government Holidays in Selected Period</div>
-                <div class="info-box" style="margin-bottom: 12px;">
-                    Note: Some colleges may not declare all these holidays
-                </div>
-                <div class="holiday-list" id="holiday-list"></div>
+            <div class="stat-card">
+                <div class="stat-label">Days Absent</div>
+                <div class="stat-value" id="absent-days-display">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Government Holidays</div>
+                <div class="stat-value" id="holiday-count">0</div>
             </div>
         </div>
-    </div>
+
+        <div class="recommendation" id="recommendation">
+            <div class="recommendation-title" id="rec-title">📌 Recommendation</div>
+            <div class="recommendation-text" id="rec-text"></div>
+        </div>
+
+        <div class="holiday-section" id="holiday-section">
+            <div class="holiday-title">Government Holidays in Selected Period</div>
+            <div class="info-box" style="margin-bottom: 12px;">
+                Note: Some colleges may not declare all these holidays
+            </div>
+            <div class="holiday-list" id="holiday-list"></div>
+        </div>
+        </section>
+
+        <footer
+            style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #6b7280; font-size: 13px;">
+            <p>&copy; 2024 Attendance Calculator. Free tool for students to track college attendance.</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                <strong>Keywords:</strong> attendance calculator, student attendance tracker, college attendance
+                percentage, 75% attendance calculator, leave planner for students, academic attendance, semester
+                attendance tracker
+            </p>
+        </footer>
+    </main>
 
     <script>
         const months = [
