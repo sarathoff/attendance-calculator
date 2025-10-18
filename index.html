@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Attendance Calculator for Students</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .calculator-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+        }
+
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .month-card {
+            padding: 14px;
+            background: white;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .month-card.selected {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+
+        .month-name {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .month-days {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .input-section {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #374151;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .info-box {
+            background: #f9f9f9;
+            padding: 12px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #666;
+            border-left: 3px solid #333;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .result-container {
+            margin-top: 32px;
+            display: none;
+        }
+
+        .result-container.show {
+            display: block;
+        }
+
+        .result-card {
+            padding: 24px;
+            background: #f9f9f9;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .result-card.success {
+            background: #f9f9f9;
+            border-color: #ddd;
+        }
+
+        .result-card.warning {
+            background: #f9f9f9;
+            border-color: #ddd;
+        }
+
+        .result-card.danger {
+            background: #f9f9f9;
+            border-color: #ddd;
+        }
+
+        .result-label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+
+        .result-message {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            padding: 16px;
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .holiday-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .holiday-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .holiday-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .holiday-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: white;
+            font-size: 13px;
+            border: 1px solid #ddd;
+        }
+
+        .holiday-name {
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .holiday-date {
+            color: #6b7280;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 12px;
+            background: white;
+            border: 1px solid #ddd;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .recommendation {
+            background: #f9f9f9;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-title {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .recommendation-text {
+            color: #374151;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .calculator-container {
+                padding: 24px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .month-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .result-value {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator-container">
+        <h1>Attendance Calculator</h1>
+        <p class="subtitle">Track your attendance and plan your leaves</p>
+
+        <!-- Step 1: Select Academic Year -->
+        <div class="section">
+            <div class="section-title">Step 1: Select Academic Year</div>
+            <div class="input-row">
+                <div class="input-section">
+                    <label>Academic Year</label>
+                    <select id="academic-year" onchange="updateMonths()">
+                        <option value="2024-2025">2024-2025</option>
+                        <option value="2025-2026">2025-2026</option>
+                        <option value="2026-2027">2026-2027</option>
+                    </select>
+                </div>
+                <div class="input-section">
+                    <label>Semester</label>
+                    <select id="semester" onchange="updateMonths()">
+                        <option value="odd">Odd Semester (July - December)</option>
+                        <option value="even">Even Semester (January - June)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Select Months -->
+        <div class="section">
+            <div class="section-title">Step 2: Select Months You Attended</div>
+            <div class="info-box">
+                Click on the months when you attended college
+            </div>
+            <div class="month-grid" id="month-grid"></div>
+        </div>
+
+        <!-- Step 3: Select Holidays -->
+        <div class="section">
+            <div class="section-title">Step 3: Select Holidays You Got</div>
+            <div class="info-box">
+                Check the holidays that were declared by your college
+            </div>
+            <div class="checkbox-grid" id="holiday-checkboxes"></div>
+        </div>
+
+        <!-- Step 4: Enter College Saturdays -->
+        <div class="section">
+            <div class="section-title">Step 4: Enter College Details</div>
+            <div class="input-section">
+                <label>Number of Saturdays with College</label>
+                <input type="number" id="saturdays-with-college" min="0" placeholder="e.g., 8">
+            </div>
+            <div class="input-section">
+                <label>Total Days Absent</label>
+                <input type="number" id="absent-days" min="0" placeholder="e.g., 15">
+            </div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateAttendance()">Calculate My Attendance</button>
+
+        <!-- Results -->
+        <div class="result-container" id="results">
+            <div class="result-card" id="result-card">
+                <div class="result-label">Your Attendance Percentage</div>
+                <div class="result-value" id="attendance-percentage">0%</div>
+                <div class="result-message" id="result-message"></div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Working Days</div>
+                    <div class="stat-value" id="total-days">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Days Present</div>
+                    <div class="stat-value" id="present-days">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Days Absent</div>
+                    <div class="stat-value" id="absent-days-display">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Government Holidays</div>
+                    <div class="stat-value" id="holiday-count">0</div>
+                </div>
+            </div>
+
+            <div class="recommendation" id="recommendation">
+                <div class="recommendation-title" id="rec-title">📌 Recommendation</div>
+                <div class="recommendation-text" id="rec-text"></div>
+            </div>
+
+            <div class="holiday-section" id="holiday-section">
+                <div class="holiday-title">Government Holidays in Selected Period</div>
+                <div class="info-box" style="margin-bottom: 12px;">
+                    Note: Some colleges may not declare all these holidays
+                </div>
+                <div class="holiday-list" id="holiday-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const months = [
+            { name: 'January', days: 31, num: 1 },
+            { name: 'February', days: 28, num: 2 },
+            { name: 'March', days: 31, num: 3 },
+            { name: 'April', days: 30, num: 4 },
+            { name: 'May', days: 31, num: 5 },
+            { name: 'June', days: 30, num: 6 },
+            { name: 'July', days: 31, num: 7 },
+            { name: 'August', days: 31, num: 8 },
+            { name: 'September', days: 30, num: 9 },
+            { name: 'October', days: 31, num: 10 },
+            { name: 'November', days: 30, num: 11 },
+            { name: 'December', days: 31, num: 12 }
+        ];
+
+        const indianHolidays = {
+            1: [
+                { name: 'New Year', date: '1 Jan' },
+                { name: 'Republic Day', date: '26 Jan' },
+                { name: 'Makar Sankranti', date: '14 Jan' }
+            ],
+            2: [
+                { name: 'Maha Shivaratri', date: 'Feb (varies)' }
+            ],
+            3: [
+                { name: 'Holi', date: 'Mar (varies)' }
+            ],
+            4: [
+                { name: 'Ram Navami', date: 'Apr (varies)' },
+                { name: 'Mahavir Jayanti', date: 'Apr (varies)' },
+                { name: 'Good Friday', date: 'Apr (varies)' }
+            ],
+            5: [
+                { name: 'Buddha Purnima', date: 'May (varies)' }
+            ],
+            6: [
+                { name: 'Eid ul-Fitr', date: 'Jun (varies)' }
+            ],
+            7: [
+                { name: 'Eid ul-Adha', date: 'Jul (varies)' }
+            ],
+            8: [
+                { name: 'Independence Day', date: '15 Aug' },
+                { name: 'Raksha Bandhan', date: 'Aug (varies)' },
+                { name: 'Janmashtami', date: 'Aug (varies)' }
+            ],
+            9: [
+                { name: 'Ganesh Chaturthi', date: 'Sep (varies)' }
+            ],
+            10: [
+                { name: 'Gandhi Jayanti', date: '2 Oct' },
+                { name: 'Dussehra', date: 'Oct (varies)' },
+                { name: 'Diwali', date: 'Oct/Nov (varies)' }
+            ],
+            11: [
+                { name: 'Guru Nanak Jayanti', date: 'Nov (varies)' }
+            ],
+            12: [
+                { name: 'Christmas', date: '25 Dec' }
+            ]
+        };
+
+        let selectedMonths = [];
+
+        function updateMonths() {
+            const semester = document.getElementById('semester').value;
+            const monthGrid = document.getElementById('month-grid');
+            monthGrid.innerHTML = '';
+            selectedMonths = [];
+
+            let monthsToShow = semester === 'odd' ? [7, 8, 9, 10, 11, 12] : [1, 2, 3, 4, 5, 6];
+
+            monthsToShow.forEach(monthNum => {
+                const month = months[monthNum - 1];
+                const card = document.createElement('div');
+                card.className = 'month-card';
+                card.setAttribute('data-month', monthNum);
+                card.innerHTML = `
+                    <div class="month-name">${month.name}</div>
+                    <div class="month-days">${month.days} days</div>
+                `;
+                card.onclick = () => toggleMonth(monthNum, card);
+                monthGrid.appendChild(card);
+            });
+        }
+
+        function toggleMonth(monthNum, card) {
+            if (selectedMonths.includes(monthNum)) {
+                selectedMonths = selectedMonths.filter(m => m !== monthNum);
+                card.classList.remove('selected');
+            } else {
+                selectedMonths.push(monthNum);
+                card.classList.add('selected');
+            }
+            updateHolidayCheckboxes();
+        }
+
+        function updateHolidayCheckboxes() {
+            const checkboxContainer = document.getElementById('holiday-checkboxes');
+            checkboxContainer.innerHTML = '';
+
+            if (selectedMonths.length === 0) {
+                checkboxContainer.innerHTML = '<div class="info-box">Please select months first</div>';
+                return;
+            }
+
+            let holidayIndex = 0;
+            selectedMonths.sort((a, b) => a - b).forEach(monthNum => {
+                if (indianHolidays[monthNum]) {
+                    indianHolidays[monthNum].forEach(holiday => {
+                        const checkboxItem = document.createElement('div');
+                        checkboxItem.className = 'checkbox-item';
+                        const checkboxId = `holiday-${holidayIndex}`;
+                        checkboxItem.innerHTML = `
+                            <input type="checkbox" id="${checkboxId}" data-month="${monthNum}">
+                            <label for="${checkboxId}">${holiday.name} (${holiday.date})</label>
+                        `;
+                        checkboxContainer.appendChild(checkboxItem);
+                        holidayIndex++;
+                    });
+                }
+            });
+
+            if (holidayIndex === 0) {
+                checkboxContainer.innerHTML = '<div class="info-box">No major holidays in selected months</div>';
+            }
+        }
+
+        function calculateAttendance() {
+            if (selectedMonths.length === 0) {
+                alert('Please select at least one month');
+                return;
+            }
+
+            const absentDays = parseInt(document.getElementById('absent-days').value) || 0;
+            const saturdaysWithCollege = parseInt(document.getElementById('saturdays-with-college').value) || 0;
+
+            // Calculate total calendar days
+            let totalCalendarDays = 0;
+            selectedMonths.forEach(monthNum => {
+                totalCalendarDays += months[monthNum - 1].days;
+            });
+
+            // Calculate Sundays (assuming approximately 4 Sundays per month)
+            const totalSundays = Math.floor(selectedMonths.length * 4.3);
+
+            // Calculate total Saturdays
+            const totalSaturdays = Math.floor(selectedMonths.length * 4.3);
+
+            // Saturdays off = Total Saturdays - Saturdays with college
+            const saturdaysOff = totalSaturdays - saturdaysWithCollege;
+
+            // Count checked holidays
+            const holidayCheckboxes = document.querySelectorAll('#holiday-checkboxes input[type="checkbox"]:checked');
+            const holidayCount = holidayCheckboxes.length;
+
+            // Get list of checked holidays for display
+            let holidayList = [];
+            holidayCheckboxes.forEach(checkbox => {
+                const label = checkbox.nextElementSibling.textContent;
+                const monthNum = parseInt(checkbox.getAttribute('data-month'));
+                const holidayName = label.split(' (')[0];
+                const holidayDate = label.match(/\((.*?)\)/)[1];
+                holidayList.push({ name: holidayName, date: holidayDate });
+            });
+
+            // Calculate total working days
+            const totalWorkingDays = totalCalendarDays - totalSundays - saturdaysOff - holidayCount;
+            const presentDays = totalWorkingDays - absentDays;
+            const attendancePercentage = ((presentDays / totalWorkingDays) * 100).toFixed(2);
+
+            // Display results
+            document.getElementById('attendance-percentage').textContent = attendancePercentage + '%';
+            document.getElementById('total-days').textContent = totalWorkingDays;
+            document.getElementById('present-days').textContent = presentDays;
+            document.getElementById('absent-days-display').textContent = absentDays;
+            document.getElementById('holiday-count').textContent = holidayCount;
+
+            // Set card color based on percentage
+            const resultCard = document.getElementById('result-card');
+            if (attendancePercentage >= 75) {
+                resultCard.className = 'result-card success';
+                document.getElementById('result-message').textContent = 'Great! Your attendance is above 75%';
+            } else if (attendancePercentage >= 65) {
+                resultCard.className = 'result-card warning';
+                document.getElementById('result-message').textContent = 'Warning! You need to improve your attendance';
+            } else {
+                resultCard.className = 'result-card danger';
+                document.getElementById('result-message').textContent = 'Critical! Your attendance is too low';
+            }
+
+            // Generate recommendation
+            generateRecommendation(attendancePercentage, presentDays, totalWorkingDays, absentDays);
+
+            // Display holidays
+            displayHolidays(holidayList);
+
+            document.getElementById('results').classList.add('show');
+        }
+
+        function generateRecommendation(percentage, present, total, absent) {
+            const recTitle = document.getElementById('rec-title');
+            const recText = document.getElementById('rec-text');
+            const recommendation = document.getElementById('recommendation');
+
+            if (percentage >= 75) {
+                // Calculate how many days can be missed
+                const currentAttendance = present;
+                let daysCanMiss = 0;
+                let futureTotal = total;
+
+                while (true) {
+                    futureTotal++;
+                    const futurePercentage = (currentAttendance / futureTotal) * 100;
+                    if (futurePercentage < 75) break;
+                    daysCanMiss++;
+                }
+
+                recTitle.textContent = '✓ Good News';
+                recText.innerHTML = `Your attendance is <strong>${percentage}%</strong>, which is above the required 75%.<br><br>
+                    <strong>You can take ${daysCanMiss} more days of leave</strong> and still maintain 75% attendance.<br><br>
+                    After taking ${daysCanMiss} days leave, your attendance will be approximately <strong>${((currentAttendance / (total + daysCanMiss)) * 100).toFixed(2)}%</strong>.`;
+                recommendation.style.borderColor = '#ddd';
+                recommendation.style.background = '#f9f9f9';
+
+            } else {
+                // Calculate how many days need to attend
+                const targetPercentage = 75;
+                const currentAttendance = present;
+                let daysNeedToAttend = 0;
+                let futureTotal = total;
+
+                while (true) {
+                    futureTotal++;
+                    daysNeedToAttend++;
+                    const futureAttendance = currentAttendance + daysNeedToAttend;
+                    const futurePercentage = (futureAttendance / futureTotal) * 100;
+                    if (futurePercentage >= targetPercentage) break;
+                    if (daysNeedToAttend > 200) break; // Safety limit
+                }
+
+                recTitle.textContent = '⚠ Action Required';
+                recText.innerHTML = `Your attendance is <strong>${percentage}%</strong>, which is below the required 75%.<br><br>
+                    <strong>You need to attend ${daysNeedToAttend} consecutive days</strong> without any absence to reach 75% attendance.<br><br>
+                    After attending ${daysNeedToAttend} days continuously, your attendance will be approximately <strong>75%</strong>.<br><br>
+                    <strong>Important:</strong> Do not take any more leaves until you reach 75% attendance.`;
+                recommendation.style.borderColor = '#ddd';
+                recommendation.style.background = '#f9f9f9';
+            }
+        }
+
+        function displayHolidays(holidayList) {
+            const holidayListDiv = document.getElementById('holiday-list');
+            holidayListDiv.innerHTML = '';
+
+            if (holidayList.length === 0) {
+                holidayListDiv.innerHTML = '<div class="info-box">No major government holidays in selected months.</div>';
+                return;
+            }
+
+            holidayList.forEach(holiday => {
+                const item = document.createElement('div');
+                item.className = 'holiday-item';
+                item.innerHTML = `
+                    <span class="holiday-name">${holiday.name}</span>
+                    <span class="holiday-date">${holiday.date}</span>
+                `;
+                holidayListDiv.appendChild(item);
+            });
+        }
+
+        // Initialize
+        updateMonths();
+    </script>
+</body>
+
+</html>
